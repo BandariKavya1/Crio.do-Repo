@@ -40,8 +40,8 @@ public class TestCases {
         Wrappers.clickElement(driver, By.xpath("//*[@role='option'][1]"));
 
         LocalDate dateValue = LocalDate.now().minusDays(7);
-        String date = dateValue.format(DateTimeFormatter.ofPattern("MMddyyyy"));
-        Wrappers.typeElement(driver, By.xpath("//input[@type='date']"), date);
+        String date = dateValue.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+        Wrappers.typeDateElement(driver, By.xpath("//input[@type='date']"), date);
         // Google Forms renders time as separate hour and minute fields.
         Wrappers.typeElement(driver,
                 By.xpath("//input[contains(translate(@aria-label, 'HOUR', 'hour'), 'hour')][1]"),

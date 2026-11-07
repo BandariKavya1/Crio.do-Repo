@@ -2,6 +2,7 @@ package demo.wrappers;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -38,5 +39,17 @@ public class Wrappers {
         String text = wait.until(ExpectedConditions.visibilityOfElementLocated(locator)).getText();
         System.out.println("GetElementText: " + text);
         return text;
+    }
+
+    public static void typeDateElement(ChromeDriver driver, By locator, String value) {
+        WebDriverWait wait = new WebDriverWait(driver, WAIT_TIME);
+        WebElement element = wait.until(ExpectedConditions.presenceOfElementLocated(locator));
+        JavascriptExecutor script = driver;
+        script.executeScript(
+                "arguments[0].value = arguments[1];"
+                        + "arguments[0].dispatchEvent(new Event('input', {bubbles:true}));"
+                        + "arguments[0].dispatchEvent(new Event('change', {bubbles:true}));",
+                element, value);
+        System.out.println("TypeElement: " + value);
     }
 }
