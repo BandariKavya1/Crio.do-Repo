@@ -10,17 +10,54 @@ import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.logging.Level;
-// import io.github.bonigarcia.wdm.WebDriverManager;
 import demo.wrappers.Wrappers;
 
 public class TestCases {
     ChromeDriver driver;
 
-    /*
-     * TODO: Write your tests here with testng @Test annotation. 
-     * Follow `testCase01` `testCase02`... format or what is provided in instructions
-     */
+    private static final String FORM_URL =
+            "https://docs.google.com/forms/d/e/1FAIpQLSep9LTMntH5YqIXa5nkiPKSs283kdwitBBhXWyZdAS-e4CxBQ/viewform";
+
+    @Test
+    public void testCase01() throws InterruptedException {
+        Wrappers.navigate(driver, FORM_URL);
+
+        // Enter the learner name and the dynamically generated epoch-time phrase.
+        Wrappers.typeElement(driver, By.xpath("(//input[@type='text'])[1]"), "Crio Learner");
+        long epochTime = System.currentTimeMillis() / 1000;
+        Wrappers.typeElement(driver, By.xpath("//textarea"),
+                "I want to be the best QA Engineer! " + epochTime);
+
+        // Select experience, tools, and the preferred form of address.
+        Wrappers.clickElement(driver, By.xpath("//*[@role='radio'][1]"));
+        Wrappers.clickElement(driver, By.xpath("//*[@role='checkbox' and @aria-label='Java']"));
+        Wrappers.clickElement(driver, By.xpath("//*[@role='checkbox' and @aria-label='Selenium']"));
+        Wrappers.clickElement(driver, By.xpath("//*[@role='checkbox' and @aria-label='TestNG']"));
+        Wrappers.clickElement(driver, By.xpath("//*[@role='listbox']"));
+        Wrappers.clickElement(driver, By.xpath("//*[@role='option'][1]"));
+
+        LocalDate dateValue = LocalDate.now().minusDays(7);
+        String date = dateValue.format(DateTimeFormatter.ofPattern("MMddyyyy"));
+        Wrappers.typeElement(driver, By.xpath("//input[@type='date']"), date);
+        // Google Forms renders time as separate hour and minute fields.
+        Wrappers.typeElement(driver,
+                By.xpath("//input[contains(translate(@aria-label, 'HOUR', 'hour'), 'hour')][1]"),
+                "07");
+        Wrappers.typeElement(driver,
+                By.xpath("//input[contains(translate(@aria-label, 'MINUTE', 'minute'), 'minute')][1]"),
+                "30");
+
+        Wrappers.clickElement(driver, By.xpath("//span[normalize-space()='Submit']"));
+        Thread.sleep(1000);
+
+        String successMessage = Wrappers.getElementText(driver,
+                By.xpath("//*[contains(normalize-space(), 'Thanks for your response')]")
+        );
+        System.out.println("Success message: " + successMessage);
+    }
 
      
     /*
