@@ -37,7 +37,7 @@ public class TestCases {
         Wrappers.clickElement(driver, By.xpath("//*[@role='checkbox' and @aria-label='Selenium']"));
         Wrappers.clickElement(driver, By.xpath("//*[@role='checkbox' and @aria-label='TestNG']"));
         Wrappers.clickElement(driver, By.xpath("//*[@role='listbox']"));
-        Wrappers.clickElement(driver, By.xpath("//*[@role='option'][1]"));
+        Wrappers.clickElement(driver, By.xpath("//*[@role='option'][2]"));
 
         LocalDate dateValue = LocalDate.now().minusDays(7);
         String date = dateValue.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
